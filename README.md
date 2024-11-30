@@ -1,1 +1,0 @@
-# geti-pratico
