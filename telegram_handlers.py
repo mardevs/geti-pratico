@@ -1,5 +1,5 @@
 from os import path,remove
-import uuid
+import uuid, re
 from telegram import File, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
@@ -96,8 +96,16 @@ async def handle_process_attach_document(chat_id: str, file: File, process: Proc
     await context.bot.send_message(chat_id=chat_id, text="Documento anexado com sucesso.")
 
 async def handle_ingress(chat_id: str, message_text: str, process: ProcessDto, context: ContextTypes.DEFAULT_TYPE):
-    # TODO: Verificar se o email é correto.
+    ingress_str = message_text.strip()
+
+    if not re.match(r'^(20[1-9][0-9]|[1-2][0-9])/(1|2)$', ingress_str):
+        msg = "Formato incorreto. Por favor, digite seu ano e período de ingresso no formato 'AAAA/Período'. Exemplo: 2024/1."
+        await context.bot.send_message(chat_id=chat_id, text=msg)
+        return
+    
     process.ingress = message_text.strip()
+
+    # TODO: Verificar se o email é correto.
     process.status = ProcessStatusEnum.WAITING_EMAIL
     database.save_process(chat_id, process)
 

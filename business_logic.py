@@ -6,7 +6,6 @@ from PyPDFForm import PdfWrapper
 from dtos.attachment_dto import HourAttachmentCategoryEnum, HoursAmountTypeEnum
 from dtos.process_dto import ProcessDto
 
-
 def can_still_add_hours(process: ProcessDto, category: HourAttachmentCategoryEnum):
     total_hours = sum_hours_for_category(process, category)
     max_hours = max_hours_for_category(process, category)

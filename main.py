@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 
@@ -23,7 +26,7 @@ async def attach(update: Update, context: ContextTypes.DEFAULT_TYPE):
     process = database.load_process(chat_id)
     
     if process is None:
-        msg = "Desculpe. Nenhum processo encontrado. Digite /start para iniciar uma criação de um processo."
+        msg = "Desculpe. Nenhum processo encontrado. Digite /start para iniciar a criação de um processo."
         await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
         return
     
@@ -55,6 +58,16 @@ async def attach(update: Update, context: ContextTypes.DEFAULT_TYPE):
     process.status = ProcessStatusEnum.ATTACHING_HOURS
     database.save_process(chat_id, process)
     database.create_current_filling_attachment(chat_id, CurrentFillingAttachmentStatusEnum.WAITING_CATEGORY)
+
+async def show_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = (
+        "1️⃣ Use /attach para enviar seus comprovantes, um por vez.\n"
+        "2️⃣ Use /attach novamente para adicionar o próximo comprovante após o envio das informações de um comprovante.\n"
+        "3️⃣ Use /finish para revisar e concluir após terminar de enviar os comprovantes.\n\n"
+        "ℹ️ Para conferir as informações enviadas ou quantidade de horas acumuladas, use /start.\n"
+        "🔄 Para recomeçar ou apagar todas as informações do processo, use /delete."
+    )
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
 async def delete(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -133,12 +146,14 @@ async def callback_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == '__main__':    
     database.init()
 
-    application = ApplicationBuilder().token('').build()
+    load_dotenv()
+    application = ApplicationBuilder().token(os.getenv("TELEGRAM_BOT_TOKEN")).build()
     
     start_handler = CommandHandler('start', start)
     attach_handler = CommandHandler('attach', attach)
     delete_handler = CommandHandler('delete', delete)
     finish_handler = CommandHandler('finish', finish)
+    help_handler = CommandHandler('help', show_help)
     
     file_handler = MessageHandler(filters.Document.PDF, document)
     text_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), text_messages)
@@ -149,6 +164,7 @@ if __name__ == '__main__':
     application.add_handler(attach_handler)
     application.add_handler(delete_handler)
     application.add_handler(finish_handler)
+    application.add_handler(help_handler)
 
     application.add_handler(file_handler)
     application.add_handler(text_handler)
