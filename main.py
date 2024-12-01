@@ -13,12 +13,13 @@ from telegram_handlers import handle_attachment_text_message, handle_email, hand
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
 
+    # por meio do db, tenta carregar o processo com o chat_id obtido
     process = database.load_process(chat_id)
     
     if process is None:
-        await handle_start_new_process(chat_id, context)
+        await handle_start_new_process(chat_id, context) #caso o processo não seja encontrado, é iniciada a criação de um novo processo
     else:
-        await handle_start_process_already_exists(chat_id, process, context)
+        await handle_start_process_already_exists(chat_id, process, context) #handler que é iniciado caso o processo seja encontrado
 
 async def attach(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -146,6 +147,10 @@ async def callback_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == '__main__':    
     database.init()
 
+     # Cria o diretório "files" caso não exista
+    if not os.path.exists('files'):
+        os.makedirs('files')
+        
     load_dotenv()
     application = ApplicationBuilder().token(os.getenv("TELEGRAM_BOT_TOKEN")).build()
     
