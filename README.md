@@ -63,11 +63,11 @@ A implementação foi realizada em Python, utilizando a biblioteca python-telegr
 
 1) **Criar um ambiente virtual**:
 
-```
-python3 -m venv venv
-```
+   ```
+   python3 -m venv venv
+   ```
 
-**2. Ativar o ambiente virtual** :
+2) **Ativar o ambiente virtual** :
 
 * Em Linux/macOS:
 
@@ -75,13 +75,17 @@ python3 -m venv venv
   source venv/bin/activate
   ```
 
-Em Windows:
+* Em Windows:
 
-``venv\Scripts\activate``
+   ```
+   venv\Scripts\activate
+   ```
 
-1. **Instalar as dependências dentro do ambiente** :
+3. **Instalar as dependências dentro do ambiente** :
 
-pip install -r requirements.txt
+   ```
+   pip install -r requirements.txt
+   ```
 
 ### **Funcionamento do bot**
 
@@ -185,36 +189,24 @@ Implementadas em business_logic.py para o gerenciamento de processos relacionado
 
 #### Funções principais
 
-1. **Validação de Horas** :
-
-* `can_still_add_hours`: Verifica se ainda é possível adicionar mais horas para uma categoria específica dentro de um processo.
-* `sum_hours_for_category`: Calcula o total de horas para uma categoria específica, garantindo que não exceda o limite permitido.
-
-1. **Cálculos Gerais** :
-
-* `total_process_hours`: Retorna a soma total de horas para todas as categorias de um processo.
-* `get_process_target_hours`: Determina o total de horas alvo de um processo, com base no currículo associado.
-
-1. **Limites por Categoria** :
-
-* `max_hours_for_category`: Obtém o limite máximo de horas para uma categoria específica, dependendo do currículo.
-* `max_hours_for_category_old_curriculum` e `max_hours_for_category_new_curriculum`: Definem os limites específicos para currículos antigos e novos.
-
-1. **Multiplicadores e Valores Baseados em Currículo**:
-
-* `get_hours_for_category_and_amount`: Calcula o total de horas com base em um valor arbitrário e na categoria.
-* `get_old_curriculum_amount_multiplier` e `get_new_curriculum_amount_multiplier`: Determinam multiplicadores específicos para currículos antigos e novos.
-
-1. **Geração de Formulários em PDF**:
-
-* `generate_pdf_form_for_process`: Preenche automaticamente um formulário em PDF com as informações de um processo, gerando um arquivo pronto para submissão.
-
-1. **Utilidades** :
-
-* `get_category_map`: Agrupa os anexos do processo por categoria.
-* `get_form_keys_for_category`: Mapeia as chaves dos campos do formulário PDF para cada categoria.
-* `is_old_curriculum`: Identifica se o processo segue um currículo antigo.
-
+* **Validação de Horas** :
+  * `can_still_add_hours`: Verifica se ainda é possível adicionar mais horas para uma categoria específica dentro de um processo.
+  * `sum_hours_for_category`: Calcula o total de horas para uma categoria específica, garantindo que não exceda o limite permitido.
+* **Cálculos Gerais** :
+  * `total_process_hours`: Retorna a soma total de horas para todas as categorias de um processo.
+  * `get_process_target_hours`: Determina o total de horas alvo de um processo, com base no currículo associado.
+* **Limites por Categoria** :
+  * `max_hours_for_category`: Obtém o limite máximo de horas para uma categoria específica, dependendo do currículo.
+  * `max_hours_for_category_old_curriculum` e `max_hours_for_category_new_curriculum`: Definem os limites específicos para currículos antigos e novos.
+* **Multiplicadores e Valores Baseados em Currículo** :
+  * `get_hours_for_category_and_amount`: Calcula o total de horas com base em um valor arbitrário e na categoria.
+  * `get_old_curriculum_amount_multiplier` e `get_new_curriculum_amount_multiplier`: Determinam multiplicadores específicos para currículos antigos e novos.
+* **Geração de Formulários em PDF** :
+  * `generate_pdf_form_for_process`: Preenche automaticamente um formulário em PDF com as informações de um processo, gerando um arquivo pronto para submissão.
+* **Utilidades** :
+  * `get_category_map`: Agrupa os anexos do processo por categoria.
+  * `get_form_keys_for_category`: Mapeia as chaves dos campos do formulário PDF para cada categoria.
+  * `is_old_curriculum`: Identifica se o processo segue um currículo antigo.
 
 ## Conclusão
 
